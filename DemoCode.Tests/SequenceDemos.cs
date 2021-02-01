@@ -32,9 +32,30 @@ namespace DemoCode.Tests
         [Fact]
         public void AddingToExistingList()
         {
+            // Arrange
             var fixture = new Fixture();
 
             var sut = new DebugMessageBuffer();
+
+            fixture.AddManyTo<string>(sut.Messages, 10);
+
+            // Act
+            sut.WriteMessages();
+
+            // Assert
+            Assert.Equal(10, sut.MessagesWritten);
+        }
+
+        [Fact]
+        public void AddToExistingListWithCreationFunction()
+        {
+            // Arrange
+            var fixture = new Fixture();
+
+            var sut = new DebugMessageBuffer();
+            var rand = new Random();
+
+            fixture.AddManyTo<string>(sut.Messages, () => rand.Next().ToString());
         }
     }
 }
